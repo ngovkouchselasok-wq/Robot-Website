@@ -267,21 +267,28 @@
         const form = document.forms['submit-to-google-sheet'];
         const btn = document.getElementById('submit-btn');
 
-        form.addEventListener('submit', e => {
+      form.addEventListener('submit', e => {
             e.preventDefault();
             btn.innerHTML = "Sending..."; // Visual feedback
             
-       fetch(scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors'})
-                .then(response => {
-                    alert('Registration Confirmed! Prepare your hardware.');
-                    form.reset();
-                    btn.innerHTML = "Confirm Attendance";
-                })
-                .catch(error => {
-                    console.error('Error!', error.message);
-                    alert('Something went wrong. Please try again.');
-                    btn.innerHTML = "Confirm Attendance";
-                });
+            // THE FIX: This translates the form data into a language Google understands
+            const data = new URLSearchParams(new FormData(form));
+
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: data, 
+                mode: 'no-cors' 
+            })
+            .then(response => {
+                alert('Registration Confirmed! Prepare your hardware.');
+                form.reset();
+                btn.innerHTML = "Confirm Attendance";
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('Something went wrong. Please try again.');
+                btn.innerHTML = "Confirm Attendance";
+            });
         });
     </script>
 </body>
