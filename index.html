@@ -271,7 +271,7 @@
             e.preventDefault();
             btn.innerHTML = "Sending..."; // Visual feedback
             
-            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+       fetch(scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors'})
                 .then(response => {
                     alert('Registration Confirmed! Prepare your hardware.');
                     form.reset();
