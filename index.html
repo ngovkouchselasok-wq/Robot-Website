@@ -199,7 +199,7 @@
             Dear Academic Audience,<br><br>
             We are pleased to invite you to participate in the upcoming Line-Following Robot Challenge, a premier showcase of engineering excellence in autonomous vehicle technology.<br><br>
             This event serves as a high-stakes arena for developers and engineers to demonstrate the efficacy of their control systems. We encourage participants to field their most sophisticated PID control algorithms and optimized hardware configurations to navigate our high-performance circuit.<br><br>
-            <strong>Date:</strong> 26/04/2026<br>
+            <strong>Date:</strong> 26/03/2026<br>
             <strong>Location:</strong> NPIC<br>
             <strong>Focus:</strong> Real-time optimization, algorithmic stability, and hardware integration.<br><br>
             This competition offers a unique opportunity to benchmark your systems against the industry's leading innovations and engage with a community dedicated to the advancement of autonomous mobility.<br><br>
@@ -221,23 +221,23 @@
 
         <div class="rsvp">
             <h2>RSVP Now</h2>
-            <form name="submit-to-google-sheet" class="rsvp-form">
+            <form action="https://formspree.io/f/mbdznzkr" method="POST" class="rsvp-form">
                 <input type="text" name="name" placeholder="Your Name" required>
                 <input type="text" name="platform" placeholder="Robot Name / Platform (e.g., STM32, ESP32)" required>
                 <input type="email" name="email" placeholder="Your Email" required>
                 <input type="tel" name="phone" placeholder="Your Phone" required>
-                <button type="submit" id="submit-btn">Confirm Attendance</button>
+                <button type="submit">Confirm Attendance</button>
             </form>
         </div>
     </div>
 
     <a href="tel:+855962000217" class="contact-btn">
-        Contact Now
+         Contact Now
     </a>
 
     <script>
-        // 1. Countdown Timer Logic targeting exactly April 26, 2026 at 09:00:00
-        const countDownDate = new Date("2026-04-26T09:00:00").getTime();
+        // Countdown Timer Logic targeting exactly March 26, 2026 at 09:00:00
+        const countDownDate = new Date("2026-03-26T09:00:00").getTime();
 
         const timerInterval = setInterval(function() {
             const now = new Date().getTime();
@@ -260,36 +260,9 @@
                 `;
             }
         }, 1000);
-
-        // 2. Google Sheets Form Submission Logic
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbx08Ag5zV19hTZFhvrSxPI0FXxzNXlw9OaJdHxiBwEw0iPMkWfH5ewm2IyHtZlA6XrbLQ/exec'; 
-        
-        const form = document.forms['submit-to-google-sheet'];
-        const btn = document.getElementById('submit-btn');
-
-      form.addEventListener('submit', e => {
-            e.preventDefault();
-            btn.innerHTML = "Sending..."; // Visual feedback
-            
-            // THE FIX: This translates the form data into a language Google understands
-            const data = new URLSearchParams(new FormData(form));
-
-            fetch(scriptURL, { 
-                method: 'POST', 
-                body: data, 
-                mode: 'no-cors' 
-            })
-            .then(response => {
-                alert('Registration Confirmed! Prepare your hardware.');
-                form.reset();
-                btn.innerHTML = "Confirm Attendance";
-            })
-            .catch(error => {
-                console.error('Error!', error.message);
-                alert('Something went wrong. Please try again.');
-                btn.innerHTML = "Confirm Attendance";
-            });
-        });
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
