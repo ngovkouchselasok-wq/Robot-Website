@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Line-Following Robot Challenge</title>
+    <style>
+        /* Modern Dark Theme Base */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; 
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
+            color: #e0e0e0; 
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        /* Glassmorphism Container */
+        .container { 
+            max-width: 750px; 
+            margin: 0 auto; 
+            padding: 50px 30px; 
+            background: rgba(20, 30, 48, 0.85); 
+            border-radius: 16px; 
+            border: 1px solid #4facfe; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(79, 172, 254, 0.2); 
+            backdrop-filter: blur(10px);
+        }
+
+        h1 { 
+            color: #00f2fe; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            font-size: 2.2em;
+        }
+        .hosts { 
+            font-style: italic; 
+            color: #a0aec0; 
+            margin-bottom: 30px; 
+            font-size: 1.1em;
+        }
+        .date-line {
+            color: #00f2fe;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        p { line-height: 1.6; font-size: 1.1em; color: #cbd5e1; }
+
+        /* Dashboard-Style Countdown Timer */
+        .countdown-container {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00f2fe;
+            padding: 30px 20px;
+            border-radius: 12px;
+            margin: 40px 0;
+            box-shadow: inset 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+        .countdown-title {
+            color: #4facfe;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .countdown { 
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .time-box {
+            background: linear-gradient(180deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            padding: 15px;
+            border-radius: 8px;
+            min-width: 80px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .time-box span {
+            display: block;
+            font-size: 2.5em; 
+            font-weight: bold;
+            color: #00f2fe;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+            font-family: monospace; 
+        }
+        .time-box small {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.8em;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* Map Styling */
+        .map-container { margin: 40px 0; }
+        .map-container h2 { color: #00f2fe; }
+        .map-container img { 
+            width: 100%; 
+            max-width: 650px; 
+            height: auto; 
+            border-radius: 12px; 
+            border: 2px solid #334155;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .map-container img:hover {
+            transform: scale(1.02);
+            border-color: #4facfe;
+        }
+
+        /* Professional RSVP Form */
+        .rsvp {
+            border-top: 1px solid #334155;
+            padding-top: 40px;
+            margin-top: 40px;
+        }
+        .rsvp h2 { color: #00f2fe; }
+        .rsvp-form { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            max-width: 400px; 
+            margin: 0 auto; 
+        }
+        input { 
+            padding: 14px; 
+            font-size: 1em; 
+            border-radius: 8px; 
+            border: 1px solid #334155; 
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        input::placeholder { color: #94a3b8; }
+        input:focus { 
+            outline: none; 
+            border-color: #00f2fe; 
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+        button { 
+            background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
+            color: #111; 
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 15px;
+            cursor: pointer; 
+            border: none; 
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(146, 254, 157, 0.4); 
+        }
+
+        /* Floating Contact Button */
+        .contact-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            color: #111;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 8px 15px rgba(0, 242, 254, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .contact-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 20px rgba(0, 242, 254, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>2026 Line-Following Robot Challenge</h1>
+        <div class="hosts">Hosted by Sela</div>
+        <div class="date-line">26/03/2026</div>
+        <p>
+            <strong>The Invitation</strong><br><br>
+            Invitation to the 2026 Autonomous Systems Racing Competition!<br><br>
+            Dear Academic Audience,<br><br>
+            We are pleased to invite you to participate in the upcoming Line-Following Robot Challenge, a premier showcase of engineering excellence in autonomous vehicle technology.<br><br>
+            This event serves as a high-stakes arena for developers and engineers to demonstrate the efficacy of their control systems. We encourage participants to field their most sophisticated PID control algorithms and optimized hardware configurations to navigate our high-performance circuit.<br><br>
+            <strong>Date:</strong> 26/03/2026<br>
+            <strong>Location:</strong> NPIC<br>
+            <strong>Focus:</strong> Real-time optimization, algorithmic stability, and hardware integration.<br><br>
+            This competition offers a unique opportunity to benchmark your systems against the industry's leading innovations and engage with a community dedicated to the advancement of autonomous mobility.<br><br>
+            We look forward to your participation in what promises to be an intellectually rigorous and technically demanding event.
+        </p>
+
+        <div class="countdown-container">
+            <div class="countdown-title"> Race begins in:</div>
+            <div class="countdown" id="timer">
+                Loading metrics...
+            </div>
+        </div>
+
+        <div class="map-container">
+            <h2>Location</h2>
+            <p>NPIC University, Phnom Penh</p>
+            <img src="Gemini_Generated_Image_c2p2lgc2p2lgc2p2.png" alt="NPIC University">
+        </div>
+
+        <div class="rsvp">
+            <h2>RSVP Now</h2>
+            <form name="submit-to-google-sheet" class="rsvp-form">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="text" name="platform" placeholder="Robot Name / Platform (e.g., STM32, ESP32)" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="tel" name="phone" placeholder="Your Phone" required>
+                <button type="submit" id="submit-btn">Confirm Attendance</button>
+            </form>
+        </div>
+    </div>
+
+    <a href="tel:+855962000217" class="contact-btn">
+        Contact Now
+    </a>
+
+    <script>
+        // 1. Countdown Timer Logic targeting exactly April 26, 2026 at 09:00:00
+        const countDownDate = new Date("2026-04-26T09:00:00").getTime();
+
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                document.getElementById("timer").innerHTML = "<h2 style='color:#92FE9D; margin:0;'>TRACK IS OPEN!</h2>";
+            } else {
+                document.getElementById("timer").innerHTML = `
+                    <div class="time-box"><span>${days}</span><small>DAYS</small></div>
+                    <div class="time-box"><span>${hours}</span><small>HOURS</small></div>
+                    <div class="time-box"><span>${minutes}</span><small>MINS</small></div>
+                    <div class="time-box"><span>${seconds}</span><small>SECS</small></div>
+                `;
+            }
+        }, 1000);
+
+        // 2. Google Sheets Form Submission Logic
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxG1dfQzLlmhwTQYea1RUUiXQ49nrkecQa6Vm2PGUf9bz6IGi9y24uOrtpsmRDV8AyyxA/exec'; 
+        
+        const form = document.forms['submit-to-google-sheet'];
+        const btn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            btn.innerHTML = "Sending..."; // Visual feedback
+            
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    alert('Registration Confirmed! Prepare your hardware.');
+                    form.reset();
+                    btn.innerHTML = "Confirm Attendance";
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert('Something went wrong. Please try again.');
+                    btn.innerHTML = "Confirm Attendance";
+                });
+        });
+    </script>
+</body>
+</html>
